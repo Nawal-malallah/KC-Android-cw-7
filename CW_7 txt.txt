@@ -1,0 +1,217 @@
+------------------------MAINACTIVITY.JAVA-----------------------------
+package com.example.cw_7;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    ArrayList<Items> itemslist = new ArrayList<>();
+
+    int nn = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        TextView name , price;
+        ImageView photo;
+
+
+        name = findViewById(R.id.name);
+        price = findViewById(R.id.price);
+        photo = findViewById(R.id.photo);
+
+
+
+
+        Items i1 = new Items("cheese" , 4 , R.drawable.cheese);
+        Items i2 = new Items("chocolate" , 5 , R.drawable.chocolate);
+        Items i3 = new Items("coffee" , 5  , R.drawable.coffee);
+        Items i4 = new Items("donut" , 2  , R.drawable.donut);
+        Items i5 = new Items("fries" , 1  , R.drawable.fries);
+        Items i6 = new Items("honey" , 1  , R.drawable.honey);
+
+
+        itemslist.add(i1);
+        itemslist.add(i2);
+        itemslist.add(i3);
+        itemslist.add(i4);
+        itemslist.add(i5);
+        itemslist.add(i6);
+
+
+        ItemsAdapter itemsadapter = new ItemsAdapter(this , 0 , itemslist);
+
+         ListView listView = findViewById(R.id.listview);
+
+         listView.setAdapter(itemsadapter);
+
+
+    }
+}
+
+-------------------------------MAINACTIVITY.XML-----------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <ListView
+       android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="InvalidId" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+----------------------------ITEMS.JAVA---------------------------
+
+package com.example.cw_7;
+
+public class Items {
+
+    private String name;
+    private int price;
+    private int photo;
+
+
+    public Items(String name, int price, int photo) {
+        this.name = name;
+        this.price = price;
+        this.photo = photo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
+
+    public int getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(int photo) {
+        this.photo = photo;
+    }
+}
+
+------------------ITEMSADAPTER.JAVA---------------------------------
+
+package com.example.cw_7;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.helper.widget.Layer;
+
+import java.util.List;
+
+public class ItemsAdapter extends ArrayAdapter<Items> {
+
+    List<Items> itemslist;
+
+    public ItemsAdapter(@NonNull Context context, int resource, @NonNull List<Items> objects) {
+        super(context, resource, objects);
+        itemslist = objects;
+    }
+
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_row, parent, false);
+
+        Items currentitems = itemslist.get(position);
+
+        TextView itemName = v.findViewById(R.id.name);
+        TextView itemPrice = v.findViewById(R.id.price);
+        ImageView itemPhoto = v.findViewById(R.id.photo);
+
+        itemName.setText(currentitems.getName());
+        itemPrice.setText(currentitems.getPrice());
+        itemPhoto.setImageResource(currentitems.getPhoto());
+
+        return v;
+    }
+}
+
+--------------------------ITEMS_ROW.XML---------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="406dp"
+        android:layout_height="156dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="TextView" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
